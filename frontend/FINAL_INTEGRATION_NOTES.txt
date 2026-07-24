@@ -1,0 +1,22 @@
+KhichiSphere non-AI integration checkpoint
+
+Completed:
+- Protected frontend routes
+- Jobs real API integration retained
+- Applications real API + status update retained
+- Candidates page uses real application/candidate data
+- Companies page uses real jobs/application data
+- Dashboard uses live jobs/application metrics
+- Analytics uses live recruitment data
+- Shared reporting service added
+- AI/Resume AI implementation intentionally untouched
+
+Verification:
+- Vite production build passed
+- New/changed integration files passed targeted ESLint
+- Backend app Python compilation passed
+
+After replacement:
+1. Backend: activate venv and run uvicorn app.main:app --reload
+2. Frontend: npm install, then npm run dev
+3. Sign out and sign in again if an old JWT returns 401.
