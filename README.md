@@ -1,121 +1,265 @@
 # 🚀 KhichiSphere
 
-> AI-Powered Recruitment Platform built with FastAPI, React, and PostgreSQL.
-
-## 📌 Overview
-
-KhichiSphere is a modern recruitment platform designed to simplify the hiring process for recruiters and job seekers. It combines traditional recruitment features with AI-powered resume analysis to provide a smarter hiring experience.
+> **AI-Powered Recruitment Platform** built with **FastAPI**, **React**, and **PostgreSQL** to streamline hiring with modern recruitment workflows and AI-assisted resume analysis.
 
 ---
 
-## ✨ Features
+## 🌟 Overview
 
-### Authentication
-- Secure JWT Authentication
-- Login & Registration
-- Protected Routes
+KhichiSphere is a full-stack recruitment platform that helps recruiters and job seekers manage the hiring process efficiently. It combines enterprise recruitment features with AI-powered resume analysis to provide faster and smarter hiring decisions.
 
-### Recruitment
+This project was designed with a scalable architecture, clean REST APIs, secure authentication, and a modern dashboard experience.
+
+---
+
+## ✨ Key Features
+
+### 🔐 Authentication
+- JWT Authentication
+- Secure Login & Registration
+- Protected APIs
+- Role-based architecture (Ready for extension)
+
+### 💼 Recruitment Management
 - Job Management
 - Candidate Management
-- Applications Management
-- Dashboard
+- Application Management
+- Recruiter Dashboard
 
-### AI Resume Analyzer (V1)
+### 🤖 AI Resume Analyzer (Version 1)
 - Resume Upload
 - Resume Parsing
 - ATS Score Generation
 - Skill Extraction
 - AI Recommendations
 
-### Upcoming (V2)
+---
+
+## 🚀 Planned Features (Version 2)
+
 - AI Recruitment Assistant
 - Job Description Matching
 - Missing Skills Detection
-- AI Resume Summary
+- Resume Summary Generation
 - Interview Question Generator
-- HR Recommendations
+- HR Recommendation Engine
+- Candidate Ranking
+- AI Mock Interview
 
 ---
 
-## 🛠 Tech Stack
+# 🏗 System Architecture
 
-### Frontend
+```
+React Frontend
+        │
+ REST API (Axios)
+        │
+ FastAPI Backend
+        │
+ SQLAlchemy ORM
+        │
+ PostgreSQL Database
+```
+
+---
+
+# 🛠 Tech Stack
+
+## Frontend
+
 - React
 - Vite
 - Tailwind CSS
 - Axios
 - React Router
 
-### Backend
+## Backend
+
 - FastAPI
 - SQLAlchemy
-- PostgreSQL
 - Alembic
+- PostgreSQL
 - JWT Authentication
+- Pydantic
 
-### AI
+## AI
+
 - Resume Parser
 - ATS Engine
 - Skill Extraction
 
 ---
 
-## 📁 Project Structure
+# 📂 Project Structure
 
-```text
-KhichiSphere/
+```
+KhichiSphere
 │
-├── backend/
-├── frontend/
-├── docs/
-├── README.md
-└── LICENSE
+├── backend
+│   ├── app
+│   ├── migrations
+│   ├── requirements.txt
+│
+├── frontend
+│   ├── src
+│   ├── public
+│
+├── docs
+├── assets
+├── database
+├── docker
+├── scripts
+│
+├── .env.example
+├── .gitignore
+├── LICENSE
+└── README.md
 ```
 
 ---
 
-## 🚀 Getting Started
+# 🔌 Major API Endpoints
 
-### Backend
+## Authentication
+
+```
+POST /auth/register
+POST /auth/login
+```
+
+## Jobs
+
+```
+GET /jobs
+POST /jobs
+PUT /jobs/{id}
+DELETE /jobs/{id}
+```
+
+## Resume
+
+```
+POST /resume/upload
+GET /resume/analysis/{resume_id}
+```
+
+---
+
+# 🚀 Getting Started
+
+## Backend
 
 ```bash
 cd backend
+
+python -m venv venv
+
+venv\Scripts\activate
+
 pip install -r requirements.txt
+
 uvicorn app.main:app --reload
 ```
 
-### Frontend
+Backend:
 
-```bash
-cd frontend
-npm install
-npm run dev
+```
+http://localhost:8000
 ```
 
 ---
 
-## 🎯 Current Status
+## Frontend
 
-- ✅ Authentication
-- ✅ Dashboard
-- ✅ Job Management
-- ✅ Applications
-- ✅ AI Resume Analyzer V1
+```bash
+cd frontend
+
+npm install
+
+npm run dev
+```
+
+Frontend:
+
+```
+http://localhost:5173
+```
 
 ---
 
-## 📌 Future Roadmap
+# 📊 Current Development Status
 
-- AI Chatbot (V2)
-- Interview Preparation
+| Module | Status |
+|----------|--------|
+| Authentication | ✅ Completed |
+| Dashboard | ✅ Completed |
+| Job Management | ✅ Completed |
+| Applications | ✅ Completed |
+| Resume Upload | ✅ Completed |
+| AI Resume Analyzer | ✅ Completed |
+| AI Chatbot | 🔄 Planned |
+| JD Matching | 🔄 Planned |
+| AI Interview | 🔄 Planned |
+
+---
+
+# 📸 Screenshots
+
+> Screenshots will be added after deployment.
+
+- Login
+- Dashboard
+- Jobs
+- Resume Upload
+- ATS Analysis
+
+---
+
+# 🛣 Roadmap
+
+## Version 1
+
+- Authentication
+- Jobs
+- Applications
+- Resume Upload
+- AI Resume Analyzer
+
+## Version 2
+
+- AI Chatbot
 - JD Matching
 - Resume Summary
 - HR Recommendation
 - Candidate Ranking
+- Mock Interview
 
 ---
 
-## 👨‍💻 Author
+# 🤝 Contributing
 
-Developed by Aspak Ahmed
+Contributions, ideas and feature suggestions are always welcome.
+
+If you find any issue, feel free to open an Issue or submit a Pull Request.
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+# 👨‍💻 Author
+
+**Aspak Ahmed**
+
+Software Developer
+
+GitHub:
+https://github.com/aspakahmed
+
+---
+
+⭐ If you like this project, don't forget to give it a Star.
