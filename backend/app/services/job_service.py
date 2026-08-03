@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 
 from app.models.user import User
 from app.repositories.job_repository import JobRepository
+from app.repositories.application_repository import ApplicationRepository
 from app.schemas.job import JobCreate
 
 
@@ -14,15 +15,22 @@ class JobService:
         current_user: User
     ):
 
-        return JobRepository.create(
-            db=db,
-            title=job.title,
-            company=job.company,
-            location=job.location,
-            description=job.description,
-            salary=job.salary,
-            created_by=current_user.id
-        )
+        try:
+            created_job = JobRepository.create(
+                db=db,
+                title=job.title,
+                company=job.company,
+                location=job.location,
+                description=job.description,
+                salary=job.salary,
+                created_by=current_user.id
+            )
+            db.commit()
+            db.refresh(created_job)
+            return created_job
+        except Exception:
+            db.rollback()
+            raise
 
     @staticmethod
     def get_all_jobs(
@@ -54,10 +62,15 @@ class JobService:
         if not job:
             raise ValueError("Job not found")
 
-        JobRepository.delete(
-            db,
-            job
-        )
+        if ApplicationRepository.has_for_job(db, job_id):
+            raise ValueError("Cannot delete a job with applications")
+
+        try:
+            JobRepository.delete(db, job)
+            db.commit()
+        except Exception:
+            db.rollback()
+            raise
 
         return {
             "message": "Job deleted successfully"

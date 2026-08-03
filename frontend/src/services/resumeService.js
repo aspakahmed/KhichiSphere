@@ -23,23 +23,10 @@ export const uploadResume = async (file) => {
  * Backend Endpoint:
  * GET /resume/analysis/{resumeId}
  */
-export const getResumeAnalysis = async (resumeId) => {
-  const response = await api.get(`/resume/analysis/${resumeId}`);
+export const getResumeAnalysis = async () => {
+  const response = await api.get("/resume/analysis");
   return response.data;
 };
 
-/**
- * Get Resume List (Future Ready)
- */
-export const getResumeHistory = async () => {
-  const response = await api.get("/resume");
-  return response.data;
-};
-
-/**
- * Delete Resume (Future Ready)
- */
-export const deleteResume = async (resumeId) => {
-  const response = await api.delete(`/resume/${resumeId}`);
-  return response.data;
-};
+// TODO(backend): add resume history and deletion endpoints before exposing
+// those actions. The current API supports only the user's current resume.

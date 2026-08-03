@@ -3,6 +3,7 @@ from sqlalchemy import (
     Integer,
     String,
     ForeignKey,
+    UniqueConstraint,
 )
 from sqlalchemy.orm import relationship
 
@@ -11,6 +12,9 @@ from app.database.database import Base
 
 class Application(Base):
     __tablename__ = "applications"
+    __table_args__ = (
+        UniqueConstraint("user_id", "job_id", name="uq_applications_user_id_job_id"),
+    )
 
     id = Column(
         Integer,

@@ -53,8 +53,8 @@ function CreateJobModal({ open, onClose, onCreated }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-xl rounded-2xl border border-slate-800 bg-slate-900 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-slate-950/80 p-4 backdrop-blur-sm sm:p-6">
+      <div role="dialog" aria-modal="true" aria-labelledby="create-job-title" className="my-auto w-full max-w-xl rounded-2xl border border-slate-800 bg-slate-900 shadow-2xl">
         <div className="flex items-center justify-between border-b border-slate-800 px-6 py-5">
           <div className="flex items-center gap-3">
             <div className="rounded-xl bg-cyan-400/10 p-2.5 text-cyan-300">
@@ -62,7 +62,7 @@ function CreateJobModal({ open, onClose, onCreated }) {
             </div>
 
             <div>
-              <h2 className="text-lg font-semibold text-white">
+              <h2 id="create-job-title" className="text-lg font-semibold text-white">
                 Create job
               </h2>
               <p className="text-sm text-slate-500">
@@ -74,61 +74,67 @@ function CreateJobModal({ open, onClose, onCreated }) {
           <button
             type="button"
             onClick={onClose}
+            aria-label="Close create job dialog"
             className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-800 hover:text-white"
           >
             <X size={19} />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 p-6">
-          <input
+        <form onSubmit={handleSubmit} className="space-y-5 p-5 sm:p-6">
+          <div className="space-y-2"><label htmlFor="job-title" className="text-sm font-medium text-slate-300">Job title</label><input
+            id="job-title"
             name="title"
             value={formData.title}
             onChange={handleChange}
             placeholder="Job title"
-            className="h-11 w-full rounded-xl border border-slate-700 bg-slate-950/60 px-4 text-sm text-white outline-none focus:border-cyan-400/50"
+            className="h-11 w-full rounded-xl border border-slate-700 bg-slate-950/60 px-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-400/50 focus:ring-2 focus:ring-cyan-400/10"
             required
-          />
+          /></div>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <input
+            <div className="space-y-2"><label htmlFor="job-company" className="text-sm font-medium text-slate-300">Company</label><input
+              id="job-company"
               name="company"
               value={formData.company}
               onChange={handleChange}
               placeholder="Company"
-              className="h-11 rounded-xl border border-slate-700 bg-slate-950/60 px-4 text-sm text-white outline-none focus:border-cyan-400/50"
+              className="h-11 w-full rounded-xl border border-slate-700 bg-slate-950/60 px-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-400/50 focus:ring-2 focus:ring-cyan-400/10"
               required
-            />
+            /></div>
 
-            <input
+            <div className="space-y-2"><label htmlFor="job-location" className="text-sm font-medium text-slate-300">Location</label><input
+              id="job-location"
               name="location"
               value={formData.location}
               onChange={handleChange}
               placeholder="Location"
-              className="h-11 rounded-xl border border-slate-700 bg-slate-950/60 px-4 text-sm text-white outline-none focus:border-cyan-400/50"
+              className="h-11 w-full rounded-xl border border-slate-700 bg-slate-950/60 px-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-400/50 focus:ring-2 focus:ring-cyan-400/10"
               required
-            />
+            /></div>
           </div>
 
-          <textarea
+          <div className="space-y-2"><label htmlFor="job-description" className="text-sm font-medium text-slate-300">Job description</label><textarea
+            id="job-description"
             name="description"
             value={formData.description}
             onChange={handleChange}
             placeholder="Job description"
             rows={5}
-            className="w-full resize-none rounded-xl border border-slate-700 bg-slate-950/60 px-4 py-3 text-sm text-white outline-none focus:border-cyan-400/50"
+            className="w-full resize-y rounded-xl border border-slate-700 bg-slate-950/60 px-4 py-3 text-sm leading-6 text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-400/50 focus:ring-2 focus:ring-cyan-400/10"
             required
-          />
+          /></div>
 
-          <input
+          <div className="space-y-2"><label htmlFor="job-salary" className="text-sm font-medium text-slate-300">Salary <span className="font-normal text-slate-500">(optional)</span></label><input
+            id="job-salary"
             name="salary"
             type="number"
             min="0"
             value={formData.salary}
             onChange={handleChange}
             placeholder="Salary (optional)"
-            className="h-11 w-full rounded-xl border border-slate-700 bg-slate-950/60 px-4 text-sm text-white outline-none focus:border-cyan-400/50"
-          />
+            className="h-11 w-full rounded-xl border border-slate-700 bg-slate-950/60 px-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-400/50 focus:ring-2 focus:ring-cyan-400/10"
+          /></div>
 
           {error && (
             <div className="rounded-xl border border-red-400/15 bg-red-500/10 p-3 text-sm text-red-300">

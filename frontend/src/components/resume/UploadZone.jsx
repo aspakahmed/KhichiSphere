@@ -58,6 +58,7 @@ export default function UploadZone({ onUploadSuccess }) {
       );
     } finally {
       setUploading(false);
+      event.target.value = "";
     }
   };
 
@@ -87,6 +88,7 @@ export default function UploadZone({ onUploadSuccess }) {
       <button
         onClick={openFilePicker}
         disabled={uploading}
+        aria-describedby="resume-upload-help"
         className="mt-5 inline-flex items-center gap-2 rounded-lg bg-cyan-400 px-4 py-2.5 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {uploading ? (
@@ -102,7 +104,7 @@ export default function UploadZone({ onUploadSuccess }) {
         )}
       </button>
 
-      <p className="mt-4 text-xs text-slate-500">
+      <p id="resume-upload-help" className="mt-4 text-xs text-slate-500">
         Supported: PDF, DOC, DOCX • Maximum 10 MB
       </p>
 

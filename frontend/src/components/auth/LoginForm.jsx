@@ -55,7 +55,7 @@ function LoginForm() {
 
       <div className="flex flex-wrap items-center justify-between gap-3 pt-0.5">
         <div className="flex items-center gap-2.5"><Checkbox id="remember" /><Label htmlFor="remember" className="cursor-pointer text-sm leading-5 text-slate-400">Remember me</Label></div>
-        <button type="button" className="shrink-0 text-sm font-medium text-cyan-300 transition hover:text-cyan-200">Forgot Password?</button>
+        <Link to="/forgot-password" className="shrink-0 text-sm font-medium text-cyan-300 transition hover:text-cyan-200">Forgot password?</Link>
       </div>
 
       {error && <div className="rounded-xl border border-red-400/15 bg-red-500/10 p-3 text-sm text-red-300">{error}</div>}

@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 
 from app.repositories.user_repository import UserRepository
 from app.schemas.user import UserRegister, UserLogin
@@ -21,12 +22,19 @@ class UserService:
 
         password_hash = hash_password(user.password)
 
-        return UserRepository.create(
-            db=db,
-            full_name=user.full_name,
-            email=user.email,
-            password_hash=password_hash,
-        )
+        try:
+            created_user = UserRepository.create(
+                db=db,
+                full_name=user.full_name,
+                email=user.email,
+                password_hash=password_hash,
+            )
+            db.commit()
+            db.refresh(created_user)
+            return created_user
+        except IntegrityError as exc:
+            db.rollback()
+            raise ValueError("Email already registered") from exc
 
     @staticmethod
     def login_user(
@@ -39,6 +47,9 @@ class UserService:
         )
 
         if not existing_user:
+            raise ValueError("Invalid email or password")
+
+        if not existing_user.is_active:
             raise ValueError("Invalid email or password")
 
         if not verify_password(

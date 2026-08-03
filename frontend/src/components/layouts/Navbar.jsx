@@ -1,10 +1,21 @@
+import { useState } from "react";
 import { Bell, Command, Menu, Search } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 
 function Navbar({ onMenuOpen }) {
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const [query, setQuery] = useState("");
   const initials = user?.full_name?.split(" ").map((name) => name[0]).join("").slice(0, 2) || "KS";
+  const handleSearch = (event) => {
+    event.preventDefault();
+    const value = query.trim().toLowerCase();
+    if (!value) return;
+    const destination = value.includes("candidate") ? "/candidates" : value.includes("company") ? "/companies" : value.includes("application") ? "/applications" : value.includes("resume") || value.includes("ai") ? "/resume-ai" : value.includes("analytic") || value.includes("report") ? "/analytics" : "/jobs";
+    navigate(destination);
+    setQuery("");
+  };
 
   return (
     <header className="sticky top-0 z-20 h-[4.5rem] border-b border-slate-800/80 bg-[#020617]/90 backdrop-blur-xl">
@@ -13,11 +24,11 @@ function Navbar({ onMenuOpen }) {
           <Menu size={20} />
         </button>
 
-        <div className="relative hidden w-full max-w-[34rem] md:block">
+        <form onSubmit={handleSearch} className="relative hidden w-full max-w-[34rem] md:block">
           <Search size={17} strokeWidth={1.9} className="pointer-events-none absolute left-4 top-1/2 z-10 -translate-y-1/2 text-slate-500" />
-          <input type="search" placeholder="Search candidates, jobs, and companies..." style={{ paddingLeft: "2.9rem", paddingRight: "4.5rem" }} className="h-10 w-full rounded-xl border border-slate-800 bg-slate-900/65 text-sm text-slate-200 outline-none transition placeholder:text-slate-500 focus:border-cyan-400/50 focus:ring-2 focus:ring-cyan-400/10" />
+          <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} aria-label="Search workspace" placeholder="Find jobs, candidates, companies..." style={{ paddingLeft: "2.9rem", paddingRight: "4.5rem" }} className="h-10 w-full rounded-xl border border-slate-800 bg-slate-900/65 text-sm text-slate-200 outline-none transition placeholder:text-slate-500 focus:border-cyan-400/50 focus:ring-2 focus:ring-cyan-400/10" />
           <span className="pointer-events-none absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-1 rounded-md border border-slate-700/90 bg-slate-800/90 px-2 py-1 text-[10px] font-medium leading-none text-slate-500"><Command size={10} />K</span>
-        </div>
+        </form>
 
         <div className="ml-auto flex shrink-0 items-center gap-3">
           <button className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/60 text-slate-400 transition hover:border-slate-700 hover:text-slate-100" aria-label="Notifications">

@@ -13,10 +13,6 @@ class ResumeAnalyzer:
 
         # Extract text
         text = ResumeParser.extract_text(filepath)
-        print("\n========== RESUME TEXT ==========\n")
-        print(text)
-        print("\n================================\n")
-
         # Extract skills
         skills = SkillExtractor.extract(text)
 

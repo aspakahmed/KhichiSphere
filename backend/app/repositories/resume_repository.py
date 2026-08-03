@@ -30,17 +30,12 @@ class ResumeRepository:
         )
 
         db.add(resume)
-        db.commit()
-        db.refresh(resume)
+        db.flush()
 
         return resume
+
     @staticmethod
-    def get_by_id(
-        db: Session,
-        resume_id: int
-    ):
-        return (
-            db.query(Resume)
-        .filter(Resume.id == resume_id)
-        .first()
-    )
+    def update(resume: Resume, filename: str, filepath: str):
+        resume.filename = filename
+        resume.filepath = filepath
+        return resume

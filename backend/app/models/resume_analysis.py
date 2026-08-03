@@ -8,12 +8,6 @@ from sqlalchemy import (
 )
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
-analysis = relationship(
-    "ResumeAnalysis",
-    back_populates="resume",
-    uselist=False,
-    cascade="all, delete-orphan"
-)
 
 from app.database.database import Base
 

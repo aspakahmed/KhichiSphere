@@ -19,11 +19,11 @@ export default function ResumeAi() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleUploadSuccess = async (resume) => {
+  const handleUploadSuccess = async () => {
     try {
       setLoading(true);
       setError("");
-      const result = await getResumeAnalysis(resume.id);
+      const result = await getResumeAnalysis();
       setAnalysis(result);
     } catch (err) {
       setError(
@@ -48,14 +48,14 @@ export default function ResumeAi() {
 
         <div className="space-y-6">
           {loading && (
-            <Panel className="p-6">
-              <p className="text-slate-300">Analyzing resume...</p>
+            <Panel className="p-6" role="status" aria-live="polite">
+              <div className="flex items-center gap-3"><Sparkles className="animate-pulse text-cyan-300" size={20} /><div><p className="font-medium text-slate-200">Analyzing resume</p><p className="mt-1 text-sm text-slate-400">Extracting skills and calculating ATS compatibility.</p></div></div>
             </Panel>
           )}
 
           {error && (
-            <Panel className="border border-red-500/20 p-6">
-              <p className="text-red-300">{error}</p>
+            <Panel className="border border-red-500/20 p-6" role="alert">
+              <p className="font-medium text-red-300">Analysis unavailable</p><p className="mt-1 text-sm text-slate-400">{error}</p>
             </Panel>
           )}
 

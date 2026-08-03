@@ -6,7 +6,7 @@ from app.models.resume_analysis import ResumeAnalysis
 class ResumeAnalysisRepository:
 
     @staticmethod
-    def create(
+    def upsert(
         db: Session,
         resume_id: int,
         parsed_text: str,
@@ -14,18 +14,17 @@ class ResumeAnalysisRepository:
         ats_score: int,
         recommendations: str,
     ):
-        analysis = ResumeAnalysis(
-            resume_id=resume_id,
-            parsed_text=parsed_text,
-            detected_skills=detected_skills,
-            ats_score=ats_score,
-            recommendations=recommendations,
-            analysis_status="completed",
-        )
+        analysis = ResumeAnalysisRepository.get_by_resume(db, resume_id)
+        if analysis is None:
+            analysis = ResumeAnalysis(resume_id=resume_id)
+            db.add(analysis)
 
-        db.add(analysis)
-        db.commit()
-        db.refresh(analysis)
+        analysis.parsed_text = parsed_text
+        analysis.detected_skills = detected_skills
+        analysis.ats_score = ats_score
+        analysis.recommendations = recommendations
+        analysis.analysis_status = "completed"
+        db.flush()
 
         return analysis
 

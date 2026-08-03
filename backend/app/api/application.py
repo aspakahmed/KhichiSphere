@@ -1,11 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.core.dependencies import (
-    get_current_user,
-    require_candidate,
-    require_recruiter,
-)
+from app.core.dependencies import get_current_user, require_recruiter_or_admin
 from app.database.database import get_db
 from app.models.user import User
 from app.schemas.application import (
@@ -39,7 +35,7 @@ def apply_job(
 
     except ValueError as e:
         raise HTTPException(
-            status_code=400,
+            status_code=404 if str(e) == "Job not found" else 409,
             detail=str(e)
         )
 
@@ -50,7 +46,7 @@ def apply_job(
 )
 def my_applications(
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_candidate)
+    current_user: User = Depends(get_current_user)
 ):
     return ApplicationService.my_applications(
         db,
@@ -64,7 +60,7 @@ def my_applications(
 )
 def get_all_applications(
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_recruiter)
+    current_user: User = Depends(require_recruiter_or_admin)
 ):
     return ApplicationService.get_all_applications(db)
 
@@ -77,7 +73,7 @@ def update_application_status(
     application_id: int,
     payload: ApplicationStatusUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_recruiter)
+    current_user: User = Depends(require_recruiter_or_admin)
 ):
     try:
         return ApplicationService.update_application_status(
@@ -88,6 +84,6 @@ def update_application_status(
 
     except ValueError as e:
         raise HTTPException(
-            status_code=400,
+            status_code=404 if str(e) == "Application not found" else 422,
             detail=str(e)
         )

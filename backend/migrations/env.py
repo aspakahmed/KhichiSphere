@@ -7,8 +7,7 @@ from alembic import context
 
 from app.core.config import settings
 from app.database.database import Base
-from app.models.user import User
-from app.models.job import Job
+import app.models  # noqa: F401 - registers every model with Base.metadata
 
 # Alembic Config
 config = context.config

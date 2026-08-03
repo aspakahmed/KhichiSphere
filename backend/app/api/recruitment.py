@@ -2,7 +2,7 @@ from collections import Counter
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session, joinedload
 
-from app.core.dependencies import get_current_user
+from app.core.dependencies import require_recruiter_or_admin
 from app.database.database import get_db
 from app.models.application import Application
 from app.models.job import Job
@@ -23,7 +23,7 @@ def _applications(db: Session):
 @router.get("/candidates")
 def candidates(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_recruiter_or_admin),
 ):
     applications = _applications(db)
     grouped = {}
@@ -48,7 +48,7 @@ def candidates(
 @router.get("/companies")
 def companies(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_recruiter_or_admin),
 ):
     jobs = db.query(Job).order_by(Job.id.desc()).all()
     applications = _applications(db)
@@ -77,7 +77,7 @@ def companies(
 @router.get("/dashboard")
 def dashboard(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_recruiter_or_admin),
 ):
     jobs = db.query(Job).all()
     applications = _applications(db)
@@ -107,7 +107,7 @@ def dashboard(
 @router.get("/analytics")
 def analytics(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(require_recruiter_or_admin),
 ):
     jobs = db.query(Job).all()
     applications = _applications(db)

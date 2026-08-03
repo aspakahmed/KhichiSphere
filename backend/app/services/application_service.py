@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 
 from app.models.user import User
 from app.repositories.application_repository import ApplicationRepository
@@ -45,11 +46,18 @@ class ApplicationService:
                 "You have already applied for this job"
             )
 
-        return ApplicationRepository.create(
-            db,
-            current_user.id,
-            job_id
-        )
+        try:
+            application = ApplicationRepository.create(
+                db,
+                current_user.id,
+                job_id
+            )
+            db.commit()
+            db.refresh(application)
+            return ApplicationRepository.get_by_id(db, application.id)
+        except IntegrityError as exc:
+            db.rollback()
+            raise ValueError("You have already applied for this job") from exc
 
     @staticmethod
     def my_applications(
@@ -84,8 +92,10 @@ class ApplicationService:
         if not application:
             raise ValueError("Application not found")
 
-        return ApplicationRepository.update_status(
-            db,
-            application,
-            status
-        )
+        try:
+            ApplicationRepository.update_status(db, application, status)
+            db.commit()
+            return ApplicationRepository.get_by_id(db, application.id)
+        except Exception:
+            db.rollback()
+            raise

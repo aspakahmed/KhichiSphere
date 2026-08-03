@@ -1,10 +1,7 @@
 ﻿from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.core.dependencies import (
-    get_current_user,
-    require_recruiter,
-)
+from app.core.dependencies import get_current_user, require_recruiter_or_admin
 from app.database.database import get_db
 from app.models.user import User
 from app.schemas.job import JobCreate, JobResponse
@@ -23,7 +20,7 @@ router = APIRouter(
 def create_job(
     job: JobCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_recruiter)
+    current_user: User = Depends(require_recruiter_or_admin)
 ):
     return JobService.create_job(
         db,
@@ -66,7 +63,7 @@ def get_job(
 
 @router.delete(
     "/{job_id}",
-    dependencies=[Depends(require_recruiter)]
+    dependencies=[Depends(require_recruiter_or_admin)]
 )
 def delete_job(
     job_id: int,
@@ -79,6 +76,6 @@ def delete_job(
         )
     except ValueError as e:
         raise HTTPException(
-            status_code=404,
+            status_code=409 if "applications" in str(e) else 404,
             detail=str(e)
         )

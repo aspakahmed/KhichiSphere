@@ -10,7 +10,6 @@ from app.schemas.user import (
     UserResponse,
     Token,
     UserLogin,
-    UserUpdate,
 )
 from app.services.user_service import UserService
 
@@ -67,18 +66,4 @@ def login(
 def current_user(
     user: User = Depends(get_current_user)
 ):
-    return user
-
-@router.patch(
-    "/me",
-    response_model=UserResponse
-)
-def update_current_user(
-    payload: UserUpdate,
-    db: Session = Depends(get_db),
-    user: User = Depends(get_current_user)
-):
-    user.full_name = payload.full_name
-    db.commit()
-    db.refresh(user)
     return user

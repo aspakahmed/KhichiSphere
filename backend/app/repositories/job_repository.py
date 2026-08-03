@@ -25,8 +25,7 @@ class JobRepository:
         )
 
         db.add(job)
-        db.commit()
-        db.refresh(job)
+        db.flush()
 
         return job
 
@@ -49,4 +48,3 @@ class JobRepository:
         job: Job
     ):
         db.delete(job)
-        db.commit()

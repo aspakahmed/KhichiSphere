@@ -13,6 +13,8 @@ oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/auth/login"
 )
 
+RECRUITER_ROLES = {"recruiter", "admin"}
+
 
 def get_current_user(
     token: str = Depends(oauth2_scheme),
@@ -52,21 +54,14 @@ def get_current_user(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid token"
         )
-def require_roles(*allowed_roles):
-    def role_checker(
-        current_user: User = Depends(get_current_user)
-    ):
-        if current_user.role not in allowed_roles:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="You do not have permission to perform this action"
-            )
-
-        return current_user
-
-    return role_checker
 
 
-require_admin = require_roles("admin")
-require_recruiter = require_roles("admin", "recruiter")
-require_candidate = require_roles("candidate")
+def require_recruiter_or_admin(
+    current_user: User = Depends(get_current_user),
+) -> User:
+    if current_user.role not in RECRUITER_ROLES:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Recruiter or admin access is required",
+        )
+    return current_user

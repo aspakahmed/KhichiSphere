@@ -17,8 +17,7 @@ class ApplicationRepository:
         )
 
         db.add(application)
-        db.commit()
-        db.refresh(application)
+        db.flush()
 
         return application
 
@@ -49,6 +48,7 @@ class ApplicationRepository:
                 joinedload(Application.job)
             )
             .filter(Application.user_id == user_id)
+            .order_by(Application.id.desc())
             .all()
         )
 
@@ -86,8 +86,13 @@ class ApplicationRepository:
         status: str
     ):
         application.status = status
-
-        db.commit()
-        db.refresh(application)
-
         return application
+
+    @staticmethod
+    def has_for_job(db: Session, job_id: int) -> bool:
+        return (
+            db.query(Application.id)
+            .filter(Application.job_id == job_id)
+            .first()
+            is not None
+        )
